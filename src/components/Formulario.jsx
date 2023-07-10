@@ -5,6 +5,7 @@ import ColoresCard from './Cards';
 function Colores() {
   const [color, setColor] = useState('');
   const [coloresGuardados, setColoresGuardados] = useState([]);
+  const [colorEditado, setColorEditado] = useState(null);
 
   useEffect(() => {
     const coloresGuardadosJSON = localStorage.getItem('coloresGuardados');
@@ -25,7 +26,15 @@ function Colores() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (color.trim() !== '') {
-      setColoresGuardados([...coloresGuardados, color]);
+      if (colorEditado) {
+        const coloresActualizados = coloresGuardados.map((col) =>
+          col === colorEditado ? color : col
+        );
+        setColoresGuardados(coloresActualizados);
+        setColorEditado(null);
+      } else {
+        setColoresGuardados([...coloresGuardados, color]);
+      }
       setColor('');
     }
   };
@@ -33,6 +42,13 @@ function Colores() {
   const handleDelete = (color) => {
     const noColor = coloresGuardados.filter((item) => item !== color);
     setColoresGuardados(noColor);
+  };
+
+  const handleEdit = (color, editedColor) => {
+    const coloresActualizados = coloresGuardados.map((col) =>
+      col === color ? editedColor : col
+    );
+    setColoresGuardados(coloresActualizados);
   };
 
   return (
@@ -52,14 +68,19 @@ function Colores() {
           </Form.Group>
           <div className="d-flex justify-content-end">
             <Button variant="primary" type="submit" className="mx-4 my-3 boton">
-              Enviar
+              {colorEditado ? 'Guardar Cambios' : 'Enviar'}
             </Button>
           </div>
         </Form>
       </Container>
       <Row>
         {coloresGuardados.map((colorGuardado, index) => (
-          <ColoresCard key={index} color={colorGuardado} onDelete={handleDelete} />
+          <ColoresCard
+            key={index}
+            color={colorGuardado}
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+          />
         ))}
       </Row>
     </Container>
