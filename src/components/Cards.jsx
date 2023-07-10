@@ -1,7 +1,7 @@
 import { Button, Card, Col, Modal, Form } from 'react-bootstrap';
 import { useState } from 'react';
 
-const ColoresCard = ({ color, onDelete, onEdit }) => {
+const ColoresCard = ({ color, onDelete, onEdit}) => {
   const style = {
     backgroundColor: color.toLowerCase(),
   };

@@ -1,3 +1,69 @@
 {
-  "colores": []
+  "colores": [
+    {
+      "nombre": "Green",
+      "apicoloreId": "colores",
+      "id": 1
+    },
+    {
+      "nombre": "Green",
+      "apicoloreId": "colores",
+      "id": 2
+    },
+    {
+      "nombre": "Green",
+      "apicoloreId": "colores",
+      "id": 3
+    },
+    {
+      "nombre": "Blue",
+      "apicoloreId": "colores",
+      "id": 4
+    },
+    {
+      "nombre": "Green",
+      "apicoloreId": "colores",
+      "id": 5
+    },
+    {
+      "nombre": "Green",
+      "apicoloreId": "colores",
+      "id": 6
+    },
+    {
+      "nombre": "Green",
+      "apicoloreId": "colores",
+      "id": 7
+    },
+    {
+      "nombre": "Green",
+      "apicoloreId": "colores",
+      "id": 8
+    },
+    {
+      "nombre": "Green",
+      "apicoloreId": "colores",
+      "id": 9
+    },
+    {
+      "nombre": "Orange",
+      "apicoloreId": "colores",
+      "id": 10
+    },
+    {
+      "nombre": "Orange",
+      "apicoloreId": "colores",
+      "id": 11
+    },
+    {
+      "nombre": "Red",
+      "apicoloreId": "colores",
+      "id": 12
+    },
+    {
+      "nombre": "Red",
+      "apicoloreId": "colores",
+      "id": 13
+    }
+  ]
 }

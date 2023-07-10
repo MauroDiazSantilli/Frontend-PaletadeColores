@@ -1,7 +1,7 @@
 import { Button, Form, Container, Row } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import ColoresCard from './Cards';
-
+import { API_URL, obtenerColores, agregarColor, eliminarColor, editarColor } from './helpers/queries';
 function Colores() {
   const [color, setColor] = useState('');
   const [coloresGuardados, setColoresGuardados] = useState([]);
@@ -23,32 +23,76 @@ function Colores() {
     setColor(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (color.trim() !== '') {
       if (colorEditado) {
-        const coloresActualizados = coloresGuardados.map((col) =>
-          col === colorEditado ? color : col
-        );
-        setColoresGuardados(coloresActualizados);
-        setColorEditado(null);
+        try {
+          const respuesta = await fetch(`${API_URL}/colores/${colorEditado.id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ nombre: color }),
+          });
+    
+          if (!respuesta.ok) {
+            throw new Error('Error al editar el color');
+          }
+    
+          const colorEditado = await respuesta.json();
+          const coloresActualizados = coloresGuardados.map((col) =>
+            col.id === colorEditado.id ? colorEditado : col
+          );
+          setColoresGuardados(coloresActualizados);
+          setColorEditado(null);
+        } catch (error) {
+          console.error(error);
+        }
       } else {
-        setColoresGuardados([...coloresGuardados, color]);
+        try {
+          const respuesta = await fetch(`${API_URL}/colores`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ nombre: color }),
+          });
+    
+          if (!respuesta.ok) {
+            throw new Error('Error al agregar el color');
+          }
+    
+          const nuevoColor = await respuesta.json();
+          setColoresGuardados([...coloresGuardados, nuevoColor]);
+        } catch (error) {
+          console.error(error);
+        }
       }
       setColor('');
     }
   };
-
-  const handleDelete = (color) => {
-    const noColor = coloresGuardados.filter((item) => item !== color);
-    setColoresGuardados(noColor);
+  
+  const handleDelete = async (color) => {
+    try {
+      const respuesta = await fetch(`${API_URL}/colores/${color.id}`, {
+        method: 'DELETE',
+      });
+  
+      if (!respuesta.ok) {
+        throw new Error('Error al eliminar el color');
+      }
+  
+      const coloresActualizados = coloresGuardados.filter((col) => col.id !== color.id);
+      setColoresGuardados(coloresActualizados);
+    } catch (error) {
+      console.error(error);
+    }
   };
-
-  const handleEdit = (color, editedColor) => {
-    const coloresActualizados = coloresGuardados.map((col) =>
-      col === color ? editedColor : col
-    );
-    setColoresGuardados(coloresActualizados);
+  
+  const handleEdit = (color) => {
+    setColorEditado(color);
+    setMostrarmodal(true);
   };
 
   return (
@@ -74,15 +118,16 @@ function Colores() {
         </Form>
       </Container>
       <Row>
-        {coloresGuardados.map((colorGuardado, index) => (
-          <ColoresCard
-            key={index}
-            color={colorGuardado}
-            onDelete={handleDelete}
-            onEdit={handleEdit}
-          />
-        ))}
-      </Row>
+  {coloresGuardados.map((colorGuardado) => (
+    <ColoresCard
+      key={colorGuardado.id}
+      color={colorGuardado.nombre} 
+      onDelete={handleDelete}
+      onEdit={handleEdit}
+    />
+  ))}
+</Row>
+
     </Container>
   );
 }
