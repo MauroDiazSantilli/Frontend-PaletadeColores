@@ -6,29 +6,29 @@ const ColoresCard = ({ color, onDelete, onEdit }) => {
     backgroundColor: color.toLowerCase(),
   };
 
-  const [showModal, setShowModal] = useState(false);
-  const [editedColor, setEditedColor] = useState(color);
+  const [mostrarmodal, setMostrarmodal] = useState(false);
+  const [coloreditado, setColoreditado] = useState(color);
 
-  const handleDelete = () => {
+  const handleBorrar = () => {
     onDelete(color);
   };
 
-  const handleEdit = () => {
-    setShowModal(true);
+  const handleEditar = () => {
+    setMostrarmodal(true);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setEditedColor(color);
+  const handleCerrarModal = () => {
+    setMostrarmodal(false);
+    setColoreditado(color);
   };
 
-  const handleSaveChanges = () => {
-    onEdit(color, editedColor);
-    setShowModal(false);
+  const handleGuardarCambios = () => {
+    onEdit(color, coloreditado);
+    setMostrarmodal(false);
   };
 
-  const handleColorChange = (e) => {
-    setEditedColor(e.target.value);
+  const handleCambioColor = (e) => {
+    setColoreditado(e.target.value);
   };
 
   return (
@@ -41,32 +41,32 @@ const ColoresCard = ({ color, onDelete, onEdit }) => {
           </div>
           <hr />
           <div className="d-flex justify-content-end">
-          <Button variant="warning me-3" className="my-1 boton" onClick={handleEdit}>
+          <Button variant="warning me-3" className="my-1 boton" onClick={handleEditar}>
               Editar
             </Button>
-            <Button variant="danger" className="my-1 boton" onClick={handleDelete}>
+            <Button variant="danger" className="my-1 boton" onClick={handleBorrar}>
               Borrar
             </Button>  
           </div>
         </Card.Body>
       </Card>
 
-      <Modal show={showModal} onHide={handleCloseModal}>
+      <Modal show={mostrarmodal} onHide={handleCerrarModal}>
         <Modal.Header closeButton>
           <Modal.Title>Editar Color</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Control
             type="text"
-            value={editedColor}
-            onChange={handleColorChange}
+            value={coloreditado}
+            onChange={handleCambioColor}
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
+          <Button variant="secondary" onClick={handleCerrarModal}>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleSaveChanges}>
+          <Button variant="primary" onClick={handleGuardarCambios}>
             Guardar Cambios
           </Button>
         </Modal.Footer>
